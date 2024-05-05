@@ -351,7 +351,7 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
     elif [ "$2" == "challenge1-container" ]; then
         grade_challenge1-container
     elif [ "$2" == "challenge2-container" ]; then
-    
+        echo ""
     elif [ "$2" == "challenge-troubleshoot" ]; then
         grade_challenge-troubleshoot
     fi
