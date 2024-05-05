@@ -113,7 +113,7 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     else
         echo "Exercise Content Not Found !!"
     fi
-    echo "$exercise_name" > /tmp/exercise
+    echo "$2" > /tmp/exercise
     echo -e "\033[1mLAB Exercise: $exercise_name\033[0m"
     echo -e "\e[1;42;97mLAB STARTED, Good Luck !!\e[0m"
     echo ""
