@@ -62,7 +62,7 @@ grade_epel() {
         fail
     fi
     echo -ne "Installing Conda ....."
-    conda -V $>/dev/null
+    conda -V &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 50 ))
