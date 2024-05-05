@@ -301,6 +301,46 @@ grade_challenge-troubleshoot(){
     echo ""
 }
 
+grade_intro-git(){
+    echo -ne "Installing Git ....."
+    git -v &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Commit Files with Git ....."
+    git log | grep helloworld.cpp | grep helloworld.py | grep sample.txt &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Correct Branch ....."
+    git branch -a | grep main  &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Correct Files After Merge ....."
+    ls /home/my-repo | grep helloworld.py | grep sample.txt  &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 85 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
 if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
     if [ "$2" == "epel" ]; then
@@ -328,6 +368,7 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     
     elif [ "$2" == "intro-git" ]; then
         exercise_name="Intro to Git"
+        sudo dnf remove -y git &>/dev/null
     
     elif [ "$2" == "challenge-git" ]; then
         exercise_name="Challenge: Create systemd service from bash script that automatically synchronize to your github repo (auto pull & push) every 5 minutes"
@@ -354,6 +395,9 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
         echo ""
     elif [ "$2" == "challenge-troubleshoot" ]; then
         grade_challenge-troubleshoot
+    elif [ "$2" == "intro-git" ]; then
+        grade_intro-git
+
     fi
     
 fi
