@@ -53,7 +53,6 @@ fail(){
 }
 
 grade_epel() {
-    score=0
     echo -ne "Installing EPEL Repository ....."
     dnf repolist all | grep enabled | grep epel | wc -l | grep 2 &>/dev/null
     if [ $? -eq 0 ];then
@@ -70,9 +69,9 @@ grade_epel() {
     else
         fail
     fi
-    echo $score > /tmp/score &>/dev/null
     echo -ne "\e[1;42;97mScore: \e[0m"
     echo $score
+    echo "$score" > /tmp/score
     lab_status
     send_data
     echo ""
