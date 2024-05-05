@@ -29,7 +29,7 @@ send_data(){
     -d "email=$email" \
     -d "rhnid=$rhnid" \
     -d "total=$score" \
-    -d "status=$status" &>/dev/null
+    -d "status=$status" 
 }
 
 
