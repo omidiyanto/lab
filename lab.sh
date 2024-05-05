@@ -215,7 +215,7 @@ grade_build-container(){
         fail
     fi
     echo -ne "Clumsy-Bird Container Executed....."
-    crul http://localhost:8080 &>/dev/null
+    curl http://localhost:8080 &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 20 ))
