@@ -12,10 +12,6 @@ student_data(){
     echo ""
 }
 
-start_epel(){
-    
-}
-
 send_data(){
     exercise_name=$(cat /tmp/exercise)
     mentor=$(cat /tmp/mentor)
@@ -69,7 +65,7 @@ if [ "$1" == "start" ];then
     elif [ "$2" == "challenge-git" ];then
         exercise_name="Challenge: Create systemd service from bash script that automatically synchronize to your github repo (auto pull & push) every 5 minutes"
     else
-        exercise_name="Exercise Content Not Found !!"
+        echo "Exercise Content Not Found !!"
     fi
     echo "$exercise_name" > /tmp/exercise
     echo "LAB Exercise: $exercise_name"
