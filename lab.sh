@@ -110,19 +110,11 @@ grade_run-container() {
     else
         fail
     fi
-    echo -ne "Podman Service is Running ....."
-    systemctl is-active podman | grep ^active &>/dev/null
-    if [ $? -eq 0 ];then
-        pass
-        score=$(( score + 5 ))
-    else
-        fail
-    fi
     echo -ne "Podman Service is Enabled ....."
     systemctl is-enabled podman | grep enabled &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 5 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
