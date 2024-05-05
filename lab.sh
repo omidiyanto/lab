@@ -191,7 +191,7 @@ grade_build-container(){
         fail
     fi
     echo -ne "Check the UBI 8 Container Image ....."
-    podman images | grep registry.access.redhat.com/ubi9/ubi | grep latest &>/dev/null
+    podman images | grep registry.access.redhat.com/ubi8/ubi | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 20 ))
