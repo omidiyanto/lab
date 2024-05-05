@@ -279,7 +279,7 @@ grade_challenge1-container() {
 
 grade_challenge-troubleshoot(){
     echo -ne "The Website is Running ....."
-    curl http://localhost | grep "Super Awesome Business-y Website!" &>/dev/null
+    curl -s http://localhost | grep "Super Awesome Business-y Website!" &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 50 ))
