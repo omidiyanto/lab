@@ -39,6 +39,7 @@ lab_status(){
     if [ "$score" == "100" ];then
         pass
         echo "PASS" > /tmp/status
+        send_data
     else
         fail
         echo "FAIL" > /tmp/status
@@ -73,9 +74,7 @@ grade_epel() {
     echo $score
     echo "$score" > /tmp/score
     lab_status
-    send_data
     echo ""
-
 }
 
 
