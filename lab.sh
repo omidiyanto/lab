@@ -41,7 +41,7 @@ if [ "$1" == "start" ];then
     exercise_name=$2
     if [ "$2" == "epel" ];then
         exercise_name="Extra Packages for Enterprise Linux (EPEL) for RHEL"
-        start_epel
+        
     elif [ "$2" == "challenge-leapp" ];then
         exercise_name="Challenge: Upgrade to Red Hat Enterprise Linux 9 in place with LEAPP"
         
@@ -72,11 +72,10 @@ if [ "$1" == "start" ];then
         exercise_name="Exercise Content Not Found !!"
     fi
     echo "$exercise_name" > /tmp/exercise
-
-
-
-
-
-
+    echo "LAB Exercise: $exercise_name"
+    echo "You can start now !!"
+    echo ""
+    
 elif [ "$2" == "grade" ]
+    echo "GRADE SUCCESS"
 fi
