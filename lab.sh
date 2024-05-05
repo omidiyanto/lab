@@ -167,6 +167,7 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
         
     elif [ "$2" == "run-container" ]; then
         exercise_name="Running containers on Red Hat Enterprise Linux"
+        sudo dnf remove -y podman &>/dev/null
 
     elif [ "$2" == "build-container" ]; then
         exercise_name="Build container images with Red Hat Enterprise Linux container tools"
