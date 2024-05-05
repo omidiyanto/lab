@@ -154,7 +154,7 @@ grade_build-container(){
     podman images | grep registry.access.redhat.com/ubi9/ubi | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -162,7 +162,7 @@ grade_build-container(){
     buildah run ubi-working-container -- rpm -q epel-release | grep el9 &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -170,7 +170,7 @@ grade_build-container(){
     buildah run ubi-working-container -- dnf info moon-buggy | grep Installed &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -178,7 +178,7 @@ grade_build-container(){
     podman images | grep localhost/moon-buggy | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -186,7 +186,7 @@ grade_build-container(){
     podman ps -a | grep localhost/moon-buggy &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -194,7 +194,7 @@ grade_build-container(){
     podman images | grep registry.access.redhat.com/ubi8/ubi | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -202,7 +202,7 @@ grade_build-container(){
     buildah run ubi-working-container-1 -- dnf info httpd | grep Installed &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -210,7 +210,7 @@ grade_build-container(){
     podman images | grep localhost/clumsy-bird | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 20 ))
+        score=$(( score + 10 ))
     else
         fail
     fi
@@ -218,7 +218,7 @@ grade_build-container(){
     crul http://localhost:8080 &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 30 ))
+        score=$(( score + 20 ))
     else
         fail
     fi
