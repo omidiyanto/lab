@@ -277,6 +277,30 @@ grade_challenge1-container() {
     echo ""
 }
 
+grade_challenge-troubleshoot(){
+    echo -ne "The Website is Running ....."
+    curl http://localhost | grep "Super Awesome Business-y Website!" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 50 ))
+    else
+        fail
+    fi
+    echo -ne "The App is Executeable ....."
+    /var/temp/app &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 50 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
 if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
     if [ "$2" == "epel" ]; then
@@ -326,5 +350,10 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
         grade_build-container
     elif [ "$2" == "challenge1-container" ]; then
         grade_challenge1-container
+    elif [ "$2" == "challenge2-container" ]; then
+    
+    elif [ "$2" == "challenge-troubleshoot" ]; then
+        grade_challenge-troubleshoot
     fi
+    
 fi
