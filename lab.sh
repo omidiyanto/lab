@@ -17,7 +17,7 @@ send_data(){
     mentor=$(cat /tmp/mentor)
     name=$(cat /tmp/name)
     email=$(cat /tmp/email)
-    rhnid=$(cat /tmp/rhnid)  # Corrected variable name
+    rhnid=$(cat /tmp/rhnid)  
     score=$(cat /tmp/score)
     status=$(cat /tmp/status)
     id="https://script.google.com/macros/s/AKfycbzo4gj6N73xUcF0w0licSyWBqQp8YO2SWTCYhx7zINVa6Bw3k603kGHaNXEctXQufTv2Q/exec"
@@ -80,7 +80,6 @@ grade_epel() {
 
 if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
-    exercise_name=$2
     if [ "$2" == "epel" ]; then
         exercise_name="Extra Packages for Enterprise Linux (EPEL) for RHEL"
         
