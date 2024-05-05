@@ -166,7 +166,7 @@ grade_build-container(){
     else
         fail
     fi
-    echo -ne "Check EPEL Repository Installed in Container Image ....."
+    echo -ne "Check Moon-Buggy Installed in Container Image ....."
     buildah run ubi-working-container -- dnf info moon-buggy | grep Installed &>/dev/null
     if [ $? -eq 0 ];then
         pass
@@ -174,7 +174,7 @@ grade_build-container(){
     else
         fail
     fi
-    echo -ne "Check the Moon-Buggy Container Image ....."
+    echo -ne "Check the Moon-Buggy Container Image Exist....."
     podman images | grep localhost/moon-buggy | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
@@ -206,7 +206,7 @@ grade_build-container(){
     else
         fail
     fi
-    echo -ne "Check the Clumsy-Bird Container Image ....."
+    echo -ne "Check the Clumsy-Bird Container Image Exist....."
     podman images | grep localhost/clumsy-bird | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
