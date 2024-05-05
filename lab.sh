@@ -13,7 +13,7 @@ student_data(){
 }
 
 send_data(){
-    exercise_name=$(cat /tmp/exercise)
+    exercise=$(cat /tmp/exercise)
     mentor=$(cat /tmp/mentor)
     name=$(cat /tmp/name)
     email=$(cat /tmp/email)
@@ -23,7 +23,7 @@ send_data(){
     id="https://script.google.com/macros/s/AKfycbzo4gj6N73xUcF0w0licSyWBqQp8YO2SWTCYhx7zINVa6Bw3k603kGHaNXEctXQufTv2Q/exec"
     curl -X POST \
     "$id" \
-    -d "exercise=$exercise_name" \
+    -d "exercise=$exercise" \
     -d "mentor=$mentor" \
     -d "name=$name" \
     -d "email=$email" \
