@@ -229,6 +229,54 @@ grade_build-container(){
     echo ""
 }
 
+grade_challenge1-container() {
+    echo -ne "Installing Podman ....."
+    podman -v &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 10 ))
+    else
+        fail
+    fi
+    echo -ne "Podman Service is Enabled ....."
+    systemctl is-enabled podman | grep enabled &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 10 ))
+    else
+        fail
+    fi
+    echo -ne "Check the Container Image ....."
+    podman images | grep docker.io/grafana/grafana | grep latest &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Run the Grafana as Container ....."
+    podman ps -a | grep Grafana | grep Up &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Grafana is Running ....."
+    curl http://localhost:3000 &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 40 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
 if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
     if [ "$2" == "epel" ]; then
@@ -242,14 +290,12 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
         sudo dnf remove -y podman &>/dev/null
 
     elif [ "$2" == "build-container" ]; then
-        exercise_name="Build container images with Red Hat Enterprise Linux container tools"
-    
-    elif [ "$2" == "app-container" ]; then
         exercise_name="Build an App Into Container Image"
     
     elif [ "$2" == "challenge1-container" ]; then
         exercise_name="Challenge: Build Simple Apache Website Using Your Own Containerfile and Push The Container Image To quay.io Registry"
-    
+        sudo dnf remove -y podman &>/dev/null
+        
     elif [ "$2" == "challenge2-container" ]; then
         exercise_name="Challenge: Build NGINX Load Balancer with Container"
     
@@ -278,5 +324,7 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
         grade_run-container
     elif [ "$2" == "build-container" ]; then
         grade_build-container
+    elif [ "$2" == "challenge1-container" ]; then
+        grade_challenge1-container
     fi
 fi
