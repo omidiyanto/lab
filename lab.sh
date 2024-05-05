@@ -149,6 +149,86 @@ grade_run-container() {
     echo ""
 }
 
+grade_build-container(){
+    echo -ne "Check the UBI 9 Container Image ....."
+    podman images | grep registry.access.redhat.com/ubi9/ubi | grep latest &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Check EPEL Repository Installed in Container Image ....."
+    buildah run ubi-working-container -- rpm -q epel-release | grep el9 &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Check EPEL Repository Installed in Container Image ....."
+    buildah run ubi-working-container -- dnf info moon-buggy | grep Installed &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Check the Moon-Buggy Container Image ....."
+    podman images | grep localhost/moon-buggy | grep latest &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Moon-Buggy Container Executed....."
+    podman ps -a | grep localhost/moon-buggy &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Check the UBI 8 Container Image ....."
+    podman images | grep registry.access.redhat.com/ubi9/ubi | grep latest &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Check httpd Installed in Container Image ....."
+    buildah run ubi-working-container-1 -- dnf info httpd | grep Installed &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Check the Clumsy-Bird Container Image ....."
+    podman images | grep localhost/clumsy-bird | grep latest &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Clumsy-Bird Container Executed....."
+    crul http://localhost:8080 &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 30 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
 if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
     if [ "$2" == "epel" ]; then
@@ -196,5 +276,7 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
         grade_challenge-leapp
     elif [ "$2" == "run-container" ]; then
         grade_run-container
+    elif [ "$2" == "build-container" ]; then
+        grade_build-container
     fi
 fi
