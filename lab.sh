@@ -238,8 +238,8 @@ grade_challenge1-container() {
     else
         fail
     fi
-    echo -ne "Podman Service is Enabled ....."
-    systemctl is-enabled podman | grep enabled &>/dev/null
+    echo -ne "Check the Base Image ....."
+    podman images | grep docker.io/library/httpd | grep latest &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 10 ))
@@ -247,23 +247,23 @@ grade_challenge1-container() {
         fail
     fi
     echo -ne "Check the Container Image ....."
-    podman images | grep docker.io/grafana/grafana | grep latest &>/dev/null
+    podman images | grep localhost/mywebsite | grep IL &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 20 ))
     else
         fail
     fi
-    echo -ne "Run the Grafana as Container ....."
-    podman ps -a | grep Grafana | grep Up &>/dev/null
+    echo -ne "Run the Website as Container ....."
+    podman ps -a | grep mywebsite-container | grep Up &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 20 ))
     else
         fail
     fi
-    echo -ne "Grafana is Running ....."
-    curl http://localhost:3000 &>/dev/null
+    echo -ne "Website is Running ....."
+    curl http://localhost:80 &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 40 ))
@@ -295,7 +295,7 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     elif [ "$2" == "challenge1-container" ]; then
         exercise_name="Challenge: Build Simple Apache Website Using Your Own Containerfile and Push The Container Image To quay.io Registry"
         sudo dnf remove -y podman &>/dev/null
-        
+
     elif [ "$2" == "challenge2-container" ]; then
         exercise_name="Challenge: Build NGINX Load Balancer with Container"
     
