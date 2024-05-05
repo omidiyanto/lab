@@ -36,10 +36,12 @@ send_data(){
 lab_status(){
     echo -ne "\e[1;42;97mLAB Status: \e[0m"
     score=$(cat /tmp/score)
-    if [ "$score" == "100"];then
+    if [ "$score" == "100" ];then
         pass
+        echo "PASS" > /tmp/status
     else
         fail
+        echo "FAIL" > /tmp/status
     fi
 }
 pass(){
@@ -72,7 +74,9 @@ grade_epel() {
     echo -ne "\e[1;42;97mScore: \e[0m"
     echo $score
     lab_status
+    send_data
     echo ""
+
 }
 
 
