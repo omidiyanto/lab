@@ -398,7 +398,20 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
         grade_challenge-troubleshoot
     elif [ "$2" == "intro-git" ]; then
         grade_intro-git
-
-    fi
     
+    fi
+else
+    echo 'Usage:  lab [ACTION] [EXERCISE]'
+    echo ''
+    echo 'A LAB script for "Infinite Learning Indonesia x IBM Academy: Hybrid Cloud & Red Hat" student  '
+    echo ''
+    echo 'Action:'
+    echo '  start       Prepare your lab environment and all required resources'
+    echo '  grade       Evaluate your work, and shows a list of grading criteria'
+    echo ''
+    echo 'Run 'timedrills --help' or 'timedrills --usage' for more information on a command.'
+    echo ''
+    echo 'For more help on how to use this script, contact the owner'
+    echo ''
+    echo ''
 fi
