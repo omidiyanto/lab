@@ -20,7 +20,7 @@ send_data(){
     rhnid=$(cat /tmp/rhnid)  
     score=$(cat /tmp/score)
     status=$(cat /tmp/status)
-    id="https://script.google.com/macros/s/AKfycbzo4gj6N73xUcF0w0licSyWBqQp8YO2SWTCYhx7zINVa6Bw3k603kGHaNXEctXQufTv2Q/exec"
+    id="https://script.google.com/macros/s/AKfycbwPo-yd83akw2PzOxdUi1yAZ0lNgB2SFdwXGAabFPkpTdSPy0ateZBk8BltXMp7rrpEzw/exec"
     curl -X POST \
     "$id" \
     -d "exercise=$exercise" \
