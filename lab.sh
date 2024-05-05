@@ -32,7 +32,51 @@ send_data(){
     -d "status=$status" &>/dev/null
 }
 
-if [ "$1" == "start" ]; then
+
+lab_status(){
+    echo -ne "\e[1;42;97mLAB Status: \e[0m"
+    score=$(cat /tmp/score)
+    if [ "$score" == "100"];then
+        pass
+    else
+        fail
+    fi
+}
+pass(){
+    printf "\033[0;32m PASS \033[0m\n" 
+}
+
+fail(){
+    printf "\033[0;31m FAIL \033[0m\n"
+}
+
+grade_epel() {
+    score=0
+    echo -ne "Installing EPEL Repository ....."
+    dnf repolist all | grep enabled | grep epel | wc -l | grep 2 &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 50 ))
+    else
+        fail
+    fi
+    echo -ne "Installing Conda ....."
+    conda -V $>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 50 ))
+    else
+        fail
+    fi
+    echo $score > /tmp/score &>/dev/null
+    echo -ne "\e[1;42;97mScore: \e[0m"
+    echo $score
+    lab_status
+    echo ""
+}
+
+
+if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
     exercise_name=$2
     if [ "$2" == "epel" ]; then
@@ -68,10 +112,13 @@ if [ "$1" == "start" ]; then
         echo "Exercise Content Not Found !!"
     fi
     echo "$exercise_name" > /tmp/exercise
-    echo "LAB Exercise: $exercise_name"
-    echo "You can start now !!"
+    echo -e "\033[1mLAB Exercise: $exercise_name\033[0m"
+    echo -e "\e[1;42;97mLAB STARTED, Good Luck !!\e[0m"
     echo ""
     
-elif [ "$1" == "grade" ]; then
-    echo "GRADE SUCCESS"
+elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
+    if [ "$2" == "epel" ]; then
+        exercise_name="Extra Packages for Enterprise Linux (EPEL) for RHEL"
+        grade_epel
+    fi
 fi
