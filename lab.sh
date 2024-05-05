@@ -287,7 +287,7 @@ grade_challenge-troubleshoot(){
         fail
     fi
     echo -ne "The App is Executeable ....."
-    /var/temp/app &>/dev/null
+    /var/tmp/critical-app &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 50 ))
