@@ -77,12 +77,91 @@ grade_epel() {
     echo ""
 }
 
+grade_challenge-leapp(){
+    echo -ne "Installing LEAPP ....."
+    leapp --version &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 50 ))
+    else
+        fail
+    fi
+    echo -ne "Update The RHEL Version to RHEL9 ....."
+    cat /etc/redhat-release | grep "Red Hat Enterprise Linux release 9" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 50 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
+grade_run-container() {
+    echo -ne "Installing Podman ....."
+    podman -v &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 10 ))
+    else
+        fail
+    fi
+    echo -ne "Podman Service is Running ....."
+    systemctl is-active podman | grep active &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Podman Service is Enabled ....."
+    systemctl is-enabled podman | grep enabled &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Check the Container Image ....."
+    podman images | grep docker.io/grafana/grafana | grep latest &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Run the Grafana as Container ....."
+    podman ps -a | grep Grafana | grep Up &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Grafana is Running ....."
+    curl http://localhost:3000 &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 40 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
 
 if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
     if [ "$2" == "epel" ]; then
         exercise_name="Extra Packages for Enterprise Linux (EPEL) for RHEL"
-        
+
     elif [ "$2" == "challenge-leapp" ]; then
         exercise_name="Challenge: Upgrade to Red Hat Enterprise Linux 9 in place with LEAPP"
         
@@ -119,7 +198,10 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     
 elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
     if [ "$2" == "epel" ]; then
-        exercise_name="Extra Packages for Enterprise Linux (EPEL) for RHEL"
         grade_epel
+    elif [ "$2" == "challenge-leapp" ]; then
+        grade_challenge-leapp
+    elif [ "$2" == "run-container" ]; then
+        grade_run-container
     fi
 fi
