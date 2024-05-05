@@ -302,6 +302,7 @@ grade_challenge-troubleshoot(){
 }
 
 grade_intro-git(){
+    echo "GRADING FOR THIS EXERCISE MUST BE DONE IN /home/my-repo DIRECTORY"
     echo -ne "Installing Git ....."
     git -v &>/dev/null
     if [ $? -eq 0 ];then
@@ -327,7 +328,7 @@ grade_intro-git(){
         fail
     fi
     echo -ne "Correct Files After Merge ....."
-    ls /home/my-repo | grep helloworld.py | grep sample.txt  &>/dev/null
+    ls /home/my-repo | grep -e helloworld.py -e sample.txt  &>/dev/null
     if [ $? -eq 0 ];then
         pass
         score=$(( score + 85 ))
