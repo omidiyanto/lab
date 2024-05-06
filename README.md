@@ -3,4 +3,4 @@ curl -s https://raw.githubusercontent.com/omidiyanto/lab/install/Install.sh | ba
 
 # Lab Guidance:
 lab start EXERCISE  --> start the lab
-lab grade EXERCISE  --> grade your lab work 
+<br>lab grade EXERCISE  --> grade your lab work 
