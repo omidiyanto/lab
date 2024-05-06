@@ -262,6 +262,88 @@ grade_challenge1-container() {
     echo ""
 }
 
+grade_challenge2-container() {
+    echo -ne "Installing Podman ....."
+    podman -v &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Validate Container Network ....."
+    podman network ls | grep web_net &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Validate Container Images for Website ....."
+    podman images | grep "quay.io/hcrhstudent/sample-app" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Validate Container Images for NGINX Load Balancer ....."
+    podman images | grep "localhost/nginx" | grep "load-balancer" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 10 ))
+    else
+        fail
+    fi
+    echo -ne "Validate NGINX Container is Running ....."
+    curl http://localhost:8080 &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 10 ))
+    else
+        fail
+    fi
+    echo -ne "Validate web1 Container is Running ....."
+    podman ps -a | grep "web1" | grep "Up" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Validate web2 Container is Running ....."
+    podman ps -a | grep "web2" | grep "Up" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    echo -ne "Validate web3 Container is Running ....."
+    podman ps -a | grep "web3" | grep "Up" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    
+    echo -ne "Validate Load-Balancer is Working ....."
+    for i in {1..15};do curl http://localhost:8080; sleep 1s; done
+    docker exec -it  cat /var/log/nginx/demo-access.log | jq -r '.upstream_addr' | tr -s ', ' '\n' | sort | uniq | wc -l | grep 4 &> /dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 50 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
 grade_challenge-troubleshoot(){
     echo -ne "The Website is Running ....."
     curl -s http://localhost | grep "Super Awesome Business-y Website!" &>/dev/null
@@ -445,7 +527,7 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
     elif [ "$2" == "challenge1-container" ]; then
         grade_challenge1-container
     elif [ "$2" == "challenge2-container" ]; then
-        echo ""
+        grade_challenge2-container
     elif [ "$2" == "challenge-troubleshoot" ]; then
         grade_challenge-troubleshoot
     elif [ "$2" == "intro-git" ]; then
