@@ -497,6 +497,7 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
 
     elif [ "$2" == "challenge2-container" ]; then
         exercise_name="Challenge: Build NGINX Load Balancer with Container"
+        sudo dnf remove -y podman &>/dev/null
     
     elif [ "$2" == "challenge-troubleshoot" ]; then
         exercise_name="Challenge: Solve Issues of HTTPD & Executable App Permissions"
