@@ -327,6 +327,25 @@ grade_intro-git(){
     echo ""
 }
 
+grade_challenge-git(){
+    echo -ne "Validate GitHub Branch in The Repository ....."
+    email=$(cat /tmp/email)
+    git clone -b $email https://github.com/hcrhstudent/challenge-git.git &>/dev/null
+    cat ./challenge-git/mentee-list | grep $email &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 5 ))
+    else
+        fail
+    fi
+    rm -rf * &> /dev/null
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
 grade_challenge-quarkus(){
     echo -ne "Installing quarkus ....."
     quarkus -v &>/dev/null
@@ -405,7 +424,7 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
         sudo dnf remove -y git &>/dev/null
     
     elif [ "$2" == "challenge-git" ]; then
-        exercise_name="Challenge: Create systemd service from bash script that automatically synchronize to your github repo (auto pull & push) every 5 minutes"
+        exercise_name="Challenge: Push New Branch to GitHub Repository"
     else
         echo "Exercise Content Not Found !!"
     fi
@@ -431,7 +450,8 @@ elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
         grade_challenge-troubleshoot
     elif [ "$2" == "intro-git" ]; then
         grade_intro-git
-    
+    elif [ "$2" == "challenge-git" ]; then
+        grade_challenge-git
     fi
 else
     echo 'Usage:  lab [ACTION] [EXERCISE]'
