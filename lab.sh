@@ -77,30 +77,6 @@ grade_epel() {
     echo ""
 }
 
-grade_challenge-leapp(){
-    echo -ne "Installing LEAPP ....."
-    leapp --version &>/dev/null
-    if [ $? -eq 0 ];then
-        pass
-        score=$(( score + 50 ))
-    else
-        fail
-    fi
-    echo -ne "Update The RHEL Version to RHEL9 ....."
-    cat /etc/redhat-release | grep "Red Hat Enterprise Linux release 9" &>/dev/null
-    if [ $? -eq 0 ];then
-        pass
-        score=$(( score + 50 ))
-    else
-        fail
-    fi
-    echo -ne "\033[1mScore: \033[0m"
-    echo $score
-    echo "$score" > /tmp/score
-    lab_status
-    echo ""
-}
-
 grade_run-container() {
     echo -ne "Installing Podman ....."
     podman -v &>/dev/null
@@ -351,13 +327,61 @@ grade_intro-git(){
     echo ""
 }
 
+grade_challenge-quarkus(){
+    echo -ne "Installing quarkus ....."
+    quarkus -v &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Microsoft SQL Service is Running ....."
+    systemctl is-active mssql-server | grep ^active &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Installation of Microsoft SQL CLI tool ....."
+    sqlcmd -? &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Build Quarkus App Container Image ....."
+    podman images | grep "localhost/quarkus/quarks-crud-app" &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "Containerize Quarkus App is Running ....."
+    podman ps -a | grep "localhost/quarkus/quarks-crud-app:latest" | grep Up &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    echo -ne "\033[1mScore: \033[0m"
+    echo $score
+    echo "$score" > /tmp/score
+    lab_status
+    echo ""
+}
+
 if [ "$1" == "start" ] && [ ! -z "$2" ]; then
     student_data
     if [ "$2" == "epel" ]; then
         exercise_name="Extra Packages for Enterprise Linux (EPEL) for RHEL"
 
-    elif [ "$2" == "challenge-leapp" ]; then
-        exercise_name="Challenge: Upgrade to Red Hat Enterprise Linux 9 in place with LEAPP"
+    elif [ "$2" == "challenge-quarkus" ]; then
+        exercise_name="Challenge: Building Quarkus App consuming Microsoft SQL Server running on Red Hat Enterprise Linux"
         
     elif [ "$2" == "run-container" ]; then
         exercise_name="Running containers on Red Hat Enterprise Linux"
@@ -393,8 +417,8 @@ if [ "$1" == "start" ] && [ ! -z "$2" ]; then
 elif [ "$1" == "grade" ] && [ ! -z "$2" ]; then
     if [ "$2" == "epel" ]; then
         grade_epel
-    elif [ "$2" == "challenge-leapp" ]; then
-        grade_challenge-leapp
+    elif [ "$2" == "challenge-quarkus" ]; then
+        grade_challenge-quarkus
     elif [ "$2" == "run-container" ]; then
         grade_run-container
     elif [ "$2" == "build-container" ]; then
