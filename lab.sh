@@ -266,7 +266,16 @@ grade_challenge1-container() {
     curl http://localhost:80 &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 40 ))
+        score=$(( score + 20 ))
+    else
+        fail
+    fi
+    rhnid=$(cat /tmp/rhnid)
+    echo -ne "Container Images Pushed to quay.io ....."
+    curl -s https://quay.io/api/v1/repository/hcrhstudent/website/tag/ | jq '.tags[].name' | grep $rhnid &>/dev/null
+    if [ $? -eq 0 ];then
+        pass
+        score=$(( score + 20 ))
     else
         fail
     fi
