@@ -329,7 +329,7 @@ grade_challenge2-container() {
     fi
     
     echo -ne "Validate Load-Balancer is Working ....."
-    for i in {1..15};do curl http://localhost:8080; sleep 1s; done
+    for i in {1..15};do curl http://localhost:8080; sleep 1s; done &>/dev/null
     docker exec -it  cat /var/log/nginx/demo-access.log | jq -r '.upstream_addr' | tr -s ', ' '\n' | sort | uniq | wc -l | grep 4 &> /dev/null
     if [ $? -eq 0 ];then
         pass
