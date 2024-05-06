@@ -334,7 +334,7 @@ grade_challenge-git(){
     cat ./challenge-git/mentee-list | grep $email &>/dev/null
     if [ $? -eq 0 ];then
         pass
-        score=$(( score + 5 ))
+        score=$(( score + 100 ))
     else
         fail
     fi
